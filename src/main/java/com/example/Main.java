@@ -19,8 +19,12 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -98,7 +102,7 @@ public class Main {
         model.put("success", true);
         return "bash";
     }
-    
+
     @RequestMapping(value = "/test2")
     public String testConnection2(Map<String, Object> model) throws IOException {
 
@@ -132,33 +136,40 @@ public class Main {
     }
 
     private void test() throws IOException {
-        String command = "bashscript.sh";
-        ProcessBuilder pb = new ProcessBuilder(command);
+        String resource = "/com/example/bashscript.sh";
+        ProcessBuilder pb = new ProcessBuilder(resource);
 
-
-        File workingFolder = new File(command);
-        System.out.println("Exists: "+workingFolder.exists());
-        System.out.println("Can read: "+workingFolder.canRead());
-        System.out.println("Can execute: "+workingFolder.canExecute());
+        File workingFolder = new File(resource);
+        System.out.println("Exists: " + workingFolder.exists());
+        System.out.println("Can read: " + workingFolder.canRead());
+        System.out.println("Can execute: " + workingFolder.canExecute());
         pb.directory(workingFolder);
 
-        Process proc = pb.start();
+        File file = null;
+        
+        URL res = getClass().getResource(resource);
+        if (res.toString().startsWith("jar:")) {
+            try {
+                InputStream input = getClass().getResourceAsStream(resource);
+                file = File.createTempFile("tempfile", ".tmp");
+                OutputStream out = new FileOutputStream(file);
+                int read;
+                byte[] bytes = new byte[1024];
 
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+                while ((read = input.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                file.deleteOnExit();
+            } catch (IOException ex) {
 
-        BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-
-        // read the output from the command
-        System.out.println("Here is the standard output of the command:\n");
-        String s = null;
-        while ((s = stdInput.readLine()) != null) {
-            System.out.println(s);
+            }
+        } else {
+            //this will probably work in your IDE, but not from a JAR
+            file = new File(res.getFile());
         }
 
-        // read any errors from the attempted command
-        System.out.println("Here is the standard error of the command (if any):\n");
-        while ((s = stdError.readLine()) != null) {
-            System.out.println(s);
+        if (file != null && !file.exists()) {
+            throw new RuntimeException("Error: File " + file + " not found!");
         }
     }
 
