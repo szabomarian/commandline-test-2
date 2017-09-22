@@ -89,16 +89,15 @@ public class Main {
   }
 
   
-  @RequestMapping(value = "/test", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String testConnection() {
+  @RequestMapping(value = "/test")
+    public String testConnection(Map<String, Object> model) {
 
         System.out.println("STARTED");
         String bashScript = this.getClass().getClassLoader().getResource("bashscript.sh").getPath();
         bashScript = "mkdir test & echo script_finished";
         execute(bashScript);
-       
-
-        return "Server available.";
+        model.put("success", true);
+        return "bash";
     }
 
     private void execute(String command) {
