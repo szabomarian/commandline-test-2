@@ -18,6 +18,8 @@ package com.example;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -33,6 +35,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
+import org.springframework.http.MediaType;
 
 @Controller
 @SpringBootApplication
@@ -84,5 +87,39 @@ public class Main {
       return new HikariDataSource(config);
     }
   }
+
+  
+  @RequestMapping(value = "/test", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String testConnection() {
+
+        System.out.println("STARTED");
+        String bashScript = this.getClass().getClassLoader().getResource("bashscript.sh").getPath();
+        bashScript = "mkdir test & echo script_finished";
+        execute(bashScript);
+       
+
+        return "Server available.";
+    }
+
+    private void execute(String command) {
+        try {
+            final Process p = Runtime.getRuntime().exec(command);
+
+            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = null;
+
+            while ((line = input.readLine()) != null) {
+//                LOGGER.debug(line);
+                if ("script_finished".equals(line)) {
+                    System.out.println("script finished successfully");
+                }
+            }
+            p.waitFor();
+            System.out.println("script finished");
+
+        } catch (Exception e) {
+            System.out.println("executing script sh " + e);
+        }
+    }
 
 }
