@@ -132,11 +132,14 @@ public class Main {
     }
 
     private void test() throws IOException {
-        ProcessBuilder pb = new ProcessBuilder("ls");
+        String command = "bashscript.sh";
+        ProcessBuilder pb = new ProcessBuilder(command);
 
-        Map<String, String> env = pb.environment();
 
-        File workingFolder = new File("test");
+        File workingFolder = new File(command);
+        System.out.println("Exists: "+workingFolder.exists());
+        System.out.println("Can read: "+workingFolder.canRead());
+        System.out.println("Can execute: "+workingFolder.canExecute());
         pb.directory(workingFolder);
 
         Process proc = pb.start();
