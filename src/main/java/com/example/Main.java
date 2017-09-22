@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,6 +102,7 @@ public class Main {
     @RequestMapping(value = "/test")
     public String testConnection(Map<String, Object> model) {
 
+        System.out.println("RUNTIME PATH: " + Paths.get(".").toAbsolutePath().normalize().toString());
         System.out.println("STARTED");
 //        String bashScript = getClass().getClassLoader().getResource("bashscript.sh").getPath();
 //      System.out.println("####### running script: " + bashScript);
