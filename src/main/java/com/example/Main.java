@@ -102,7 +102,7 @@ public class Main {
     @RequestMapping(value = "/test")
     public String testConnection(Map<String, Object> model) {
 
-        System.out.println("RUNTIME PATH: ps"
+        System.out.println("RUNTIME PATH: "
                 + "" + Paths.get(".").toAbsolutePath().normalize().toString());
         System.out.println("STARTED");
 //        String bashScript = getClass().getClassLoader().getResource("bashscript.sh").getPath();
@@ -110,8 +110,7 @@ public class Main {
       String[] cmd = {
               "/bin/sh",
               "-c",
-              "mkdir aaa ; echo xxxxxxxxxx ; cd aaa ; mkdir bbb ; cd bbb"
-      };
+              "mkdir aaa ; echo xxxxxxxxxx ; cd aaa ; mkdir bbb ; cd bbb; git clone --bare https://szabomarian:yo2kbeYo2kbe@github.com/szabomarian/commandline-test.git ; cd commandline-test.git ; git push --mirror https://szabomarian:yo2kbeYo2kbe@github.com/szabomarian/commandline-test-2.git"       };
 /*        String[] cmd = {
                 "env",
         };
