@@ -95,12 +95,22 @@ public class Main {
         System.out.println("STARTED");
 //        String bashScript = getClass().getClassLoader().getResource("bashscript.sh").getPath();
 //      System.out.println("####### running script: " + bashScript);
-        execute("~/bashscript.sh");
+      String[] cmd = {
+              "/bin/sh",
+              "-c",
+              "mkdir aaa ; cd aaa ; mkdir bbb ; cd bbb ; git clone https://github.com/szabomarian/commandline-test.git"
+      };
+
+        execute(cmd);
+//        execute("cd test");
+//        execute("mkdir test2");
+//        execute("cd test2");
+//        execute("mkdir test3");
         model.put("success", true);
         return "bash";
     }
 
-    private void execute(String command) {
+    private void execute(String[] command) {
         try {
             final Process p = Runtime.getRuntime().exec(command);
 
