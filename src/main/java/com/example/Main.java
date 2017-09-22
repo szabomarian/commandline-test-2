@@ -18,6 +18,7 @@ package com.example;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -41,6 +43,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
+
 import org.springframework.http.MediaType;
 
 @Controller
@@ -94,18 +97,21 @@ public class Main {
         }
     }
 
-  
-  @RequestMapping(value = "/test")
+
+    @RequestMapping(value = "/test")
     public String testConnection(Map<String, Object> model) {
 
         System.out.println("STARTED");
 //        String bashScript = getClass().getClassLoader().getResource("bashscript.sh").getPath();
 //      System.out.println("####### running script: " + bashScript);
-      String[] cmd = {
-              "/bin/sh",
-              "-c",
-              "mkdir aaa ; cd aaa ; mkdir bbb ; cd bbb"
-      };
+//      String[] cmd = {
+//              "/bin/sh",
+//              "-c",
+//              "mkdir aaa ; cd aaa ; mkdir bbb ; cd bbb"
+//      };
+        String[] cmd = {
+                "env",
+        };
 
         execute(cmd);
 //        execute("cd test");
@@ -116,16 +122,6 @@ public class Main {
         return "bash";
     }
 
-    @RequestMapping(value = "/test2")
-    public String testConnection2(Map<String, Object> model) throws IOException {
-
-        System.out.println("STARTED");
-        test();
-        //String bashScript = this.getClass().getClassLoader().getResource("bashscript.sh").getPath();
-        //execute(bashScript);
-        //model.put("success", true);
-        return "bash";
-    }
 
     private void execute(String[] command) {
         try {
@@ -135,10 +131,8 @@ public class Main {
             String line = null;
 
             while ((line = input.readLine()) != null) {
-//                LOGGER.debug(line);
-                if ("script_finished".equals(line)) {
-                    System.out.println("script finished successfully");
-                }
+                System.out.println(line);
+
             }
             p.waitFor();
             System.out.println("script finished");
