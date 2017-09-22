@@ -102,19 +102,20 @@ public class Main {
     @RequestMapping(value = "/test")
     public String testConnection(Map<String, Object> model) {
 
-        System.out.println("RUNTIME PATH: " + Paths.get(".").toAbsolutePath().normalize().toString());
+        System.out.println("RUNTIME PATH: ps"
+                + "" + Paths.get(".").toAbsolutePath().normalize().toString());
         System.out.println("STARTED");
 //        String bashScript = getClass().getClassLoader().getResource("bashscript.sh").getPath();
 //      System.out.println("####### running script: " + bashScript);
-//      String[] cmd = {
-//              "/bin/sh",
-//              "-c",
-//              "mkdir aaa ; cd aaa ; mkdir bbb ; cd bbb"
-//      };
-        String[] cmd = {
+      String[] cmd = {
+              "/bin/sh",
+              "-c",
+              "mkdir aaa ; echo xxxxxxxxxx ; cd aaa ; mkdir bbb ; cd bbb"
+      };
+/*        String[] cmd = {
                 "env",
         };
-
+*/
         execute(cmd);
 //        execute("cd test");
 //        execute("mkdir test2");
