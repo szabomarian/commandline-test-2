@@ -93,8 +93,7 @@ public class Main {
     public String testConnection(Map<String, Object> model) {
 
         System.out.println("STARTED");
-        //String bashScript = this.getClass().getClassLoader().getResource("bashscript.sh").getPath();
-        String bashScript = "mkdir test";
+        String bashScript = this.getClass().getClassLoader().getResource("bashscript.sh").getPath();
         execute(bashScript);
         model.put("success", true);
         return "bash";
