@@ -104,7 +104,7 @@ public class Main {
       String[] cmd = {
               "/bin/sh",
               "-c",
-              "mkdir aaa ; cd aaa ; mkdir bbb ; cd bbb ; git clone https://github.com/szabomarian/commandline-test.git"
+              "mkdir aaa ; cd aaa ; mkdir bbb ; cd bbb"
       };
 
         execute(cmd);
