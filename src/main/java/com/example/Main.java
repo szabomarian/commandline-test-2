@@ -95,7 +95,7 @@ public class Main {
         System.out.println("STARTED");
 //        String bashScript = getClass().getClassLoader().getResource("bashscript.sh").getPath();
 //      System.out.println("####### running script: " + bashScript);
-        execute("./bashscript.sh");
+        execute("~/bashscript.sh");
         model.put("success", true);
         return "bash";
     }
